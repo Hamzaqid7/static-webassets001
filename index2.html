@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaSLead — Turn Website Visitors Into High-Value Closed Leads</title>
+  <style>
+    /* --- 1. Root & Base Reset --- */
+    html {
+      height: 100%;
+      scroll-behavior: smooth;
+      box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    /* --- 2. Design Tokens --- */
+    :root {
+      --color-bg: #0b0f17;
+      --color-card-bg: rgba(21, 29, 42, 0.75);
+      --color-card-solid: #151d2a;
+      --color-text: #f8fafc;
+      --color-text-muted: #94a3b8;
+      --color-primary: #3b82f6;
+      --color-primary-hover: #2563eb;
+      --color-accent: #10b981;
+      --color-purple: #a855f7;
+      --color-border: rgba(255, 255, 255, 0.08);
+      --color-border-glow: rgba(59, 130, 246, 0.3);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Section Wrapper Limits */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    .section-padding {
+      padding: 6rem 0;
+    }
+
+    /* Section Header Reusable Styling */
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 4rem auto;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: #60a5fa;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem 0;
+      color: #ffffff;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* --- Buttons --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* --- 1. Navigation Bar --- */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(11, 15, 23, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-container {
+      max-width: 1440px;
+      width: 90%;
+      margin: 0 auto;
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--color-text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-badge {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+    }
+
+    .logo span {
+      color: var(--color-primary);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 0.925rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-links a:hover {
+      color: var(--color-text);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+      z-index: 1001;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-text);
+      border-radius: 2px;
+      transition: var(--transition-smooth);
+    }
+
+    /* --- 2. Hero Section --- */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7.5rem 0;
+      overflow: hidden;
+      background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(11, 15, 23, 0.95) 0%,
+        rgba(11, 15, 23, 0.85) 50%,
+        rgba(11, 15, 23, 0.92) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1440px;
+      margin: 0;
+      width: 90%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      font-size: 0.85rem;
+      font-weight: 500;
+      width: fit-content;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--color-text-muted);
+      margin: 0;
+      max-width: 580px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stat-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.825rem;
+      color: var(--color-text-muted);
+    }
+
+    .hero-media-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main-image-container {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--color-border);
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .main-image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .floating-badge {
+      position: absolute;
+      background: var(--color-card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+      padding: 0.85rem 1.15rem;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 3;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .badge-top-left {
+      top: 8%;
+      left: -8%;
+      animation-delay: 0s;
+    }
+
+    .badge-bottom-right {
+      bottom: 10%;
+      right: -8%;
+      animation-delay: 3s;
+    }
+
+    .badge-icon-wrapper {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--color-accent);
+    }
+
+    .badge-top-left .badge-icon-wrapper {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--color-primary);
+    }
+
+    .badge-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .badge-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .badge-subtitle {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- 3. Social Proof Banner --- */
+    .social-proof-section {
+      background: #080c13;
+      border-y: 1px solid var(--color-border);
+      padding: 2.5rem 0;
+    }
+
+    .social-proof-text {
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .logo-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem 4rem;
+      opacity: 0.65;
+    }
+
+    .logo-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: -0.02em;
+      transition: var(--transition-smooth);
+    }
+
+    .logo-item:hover {
+      opacity: 1;
+      color: var(--color-primary);
+    }
+
+    /* --- 4. Features Grid Section --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--color-border-glow);
+      box-shadow: 0 12px 30px -10px rgba(59, 130, 246, 0.2);
+    }
+
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem 0;
+      color: #ffffff;
+    }
+
+    .feature-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    /* --- 5. How It Works Section --- */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+
+    .workflow-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: var(--transition-smooth);
+    }
+
+    .workflow-card:hover {
+      border-color: var(--color-border-glow);
+    }
+
+    .step-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.25rem;
+    }
+
+    .workflow-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem 0;
+      color: #ffffff;
+    }
+
+    .workflow-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    /* --- 6. Pricing Section --- */
+    .pricing-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .toggle-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .toggle-label.active {
+      color: #ffffff;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #1e293b;
+      border: 1px solid var(--color-border);
+      transition: .3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--color-primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .discount-badge {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--color-accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--color-card-solid);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .pricing-card.popular {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 35px rgba(59, 130, 246, 0.2);
+      transform: scale(1.03);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+    }
+
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .plan-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin: 0 0 1.5rem 0;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .amount {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .period {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.925rem;
+      color: #cbd5e1;
+    }
+
+    .plan-features svg {
+      width: 18px;
+      height: 18px;
+      color: var(--color-accent);
+      flex-shrink: 0;
+    }
+
+    /* --- 7. Testimonials Section --- */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .testimonial-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: var(--transition-smooth);
+    }
+
+    .testimonial-card:hover {
+      border-color: var(--color-border-glow);
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 0.25rem;
+      color: #f59e0b;
+    }
+
+    .testimonial-quote {
+      font-size: 0.975rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .testimonial-user {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: auto;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--color-border);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .user-role {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- 8. FAQ Accordion Section --- */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .faq-item.active {
+      border-color: var(--color-border-glow);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 1.25rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+      color: var(--color-primary);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 1.5rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding: 0 1.5rem 1.25rem 1.5rem;
+    }
+
+    /* --- 9. Bottom CTA Section --- */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(88, 28, 135, 0.4) 100%);
+      border: 1px solid var(--color-border-glow);
+      border-radius: var(--radius-lg);
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .cta-form {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      max-width: 500px;
+      margin: 2rem auto 1rem auto;
+      flex-wrap: wrap;
+    }
+
+    .cta-input {
+      flex: 1;
+      min-width: 260px;
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: rgba(15, 23, 42, 0.8);
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .cta-input:focus {
+      border-color: var(--color-primary);
+    }
+
+    .cta-microcopy {
+      font-size: 0.825rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- 10. Comprehensive Footer --- */
+    .site-footer {
+      background: #070a10;
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 0 2rem 0;
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      transition: var(--transition-smooth);
+    }
+
+    .social-icon:hover {
+      background: var(--color-primary);
+      color: #ffffff;
+      border-color: var(--color-primary);
+    }
+
+    .footer-column-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 1.25rem 0;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--color-border);
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .footer-legal-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-legal-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+
+    .footer-legal-links a:hover {
+      color: #ffffff;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-smooth);
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      background: #0f172a;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 720px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #020617;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    /* Keyframes */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* --- Responsive Breakpoints --- */
+    @media (max-width: 1024px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+      }
+
+      .hero-content {
+        text-align: center;
+        align-items: center;
+      }
+
+      .hero-cta-group {
+        justify-content: center;
+      }
+
+      .workflow-grid, .pricing-grid, .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card.popular {
+        transform: scale(1);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(11, 15, 23, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--color-border);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.5rem;
+        gap: 1.5rem;
+        max-height: calc(100vh - 100%);
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: var(--transition-smooth);
+      }
+      .nav-menu.is-open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        width: 90%;
+      }
+      .hero-section {
+        padding: 7.5rem 0 4rem 0;
+      }
+      .section-padding {
+        padding: 4rem 0;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .floating-badge {
+        position: relative;
+        inset: auto;
+        animation: none;
+        width: 100%;
+        margin-top: 0.75rem;
+      }
+      .hero-media-wrapper {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Navigation Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <div class="logo-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        SaaS<span>Lead</span>
+      </a>
+
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#workflow">How It Works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#demo" class="btn btn-primary">Book Demo</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Automated Lead Closure v2.0
+        </div>
+
+        <h1 class="hero-title">
+          Turn Website Traffic Into <span class="gradient-text">Closed Leads</span> Fast
+        </h1>
+
+        <p class="hero-description">
+          Empower your sales team with real-time intent analytics, automated CRM routing, and instant client chat—all designed to turn qualified site visitors into paying customers.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#pricing" class="btn btn-primary">
+            Start Free Trial
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button class="btn btn-secondary" id="openDemoBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Watch 2-Min Demo
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-header">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span class="stat-number">99.4%</span>
+            </div>
+            <span class="stat-label">Routing Accuracy</span>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              <span class="stat-number">3.2x</span>
+            </div>
+            <span class="stat-label">Revenue Lift</span>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="stat-number">&lt; 5m</span>
+            </div>
+            <span class="stat-label">Response Speed</span>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span class="stat-number">10k+</span>
+            </div>
+            <span class="stat-label">Sales Reps</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-media-wrapper">
+        <div class="floating-badge badge-top-left">
+          <div class="badge-icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="badge-text">
+            <span class="badge-title">Deal Closed</span>
+            <span class="badge-subtitle">Enterprise Plan · $12,500</span>
+          </div>
+        </div>
+
+        <div class="main-image-container">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" alt="Sales professional closing website lead">
+        </div>
+
+        <div class="floating-badge badge-bottom-right">
+          <div class="badge-icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="badge-text">
+            <span class="badge-title">+48% Conversion</span>
+            <span class="badge-subtitle">Compared to last month</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Social Proof Banner -->
+  <section class="social-proof-section">
+    <div class="container">
+      <div class="social-proof-text">Trusted by 10,000+ fast-growing revenue teams worldwide</div>
+      <div class="logo-cloud">
+        <div class="logo-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          AcmeCorp
+        </div>
+        <div class="logo-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          NEXUS
+        </div>
+        <div class="logo-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l10 20H2L12 2z"/></svg>
+          VERTEX
+        </div>
+        <div class="logo-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+          PULSE.io
+        </div>
+        <div class="logo-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z"/></svg>
+          SYNAPSE
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Features Grid Section -->
+  <section class="section-padding" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Core Features</span>
+        <h2 class="section-title">Engineered for High-Velocity <span class="gradient-text">Sales Teams</span></h2>
+        <p class="section-subtitle">Everything you need to turn high-intent visitors into booked pipeline in real time.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="feature-title">Real-Time Intent Tracking</h3>
+          <p class="feature-desc">Identify visitors high-value actions on pricing and demo pages before they drop off.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          </div>
+          <h3 class="feature-title">Instant Lead Routing</h3>
+          <p class="feature-desc">Route high-scoring leads instantly to active account executives based on territory and capacity.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
+          </div>
+          <h3 class="feature-title">Automated CRM Sync</h3>
+          <p class="feature-desc">Bidirectionally sync contacts, activities, and pipeline updates directly into Salesforce or HubSpot.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="feature-title">AI Conversation Intelligence</h3>
+          <p class="feature-desc">Analyze visitor questions on the fly and suggest winning response scripts to your SDR team.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <h3 class="feature-title">Multi-Channel Outreach</h3>
+          <p class="feature-desc">Trigger automated follow-ups via Email, SMS, or LinkedIn as soon as a visitor requests a demo.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="feature-title">Deep Enterprise Analytics</h3>
+          <p class="feature-desc">Gain full visibility into campaign attribution, representative performance, and conversion bottlenecks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. How It Works Section -->
+  <section class="section-padding" id="workflow" style="background: #080c13;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple Integration</span>
+        <h2 class="section-title">Up and Running in <span class="gradient-text">Under 5 Minutes</span></h2>
+        <p class="section-subtitle">No complex engineering or heavy onboarding required.</p>
+      </div>
+
+      <div class="workflow-grid">
+        <div class="workflow-card">
+          <div class="step-number">01</div>
+          <h3 class="workflow-title">Install 1-Line Script</h3>
+          <p class="workflow-desc">Paste a lightweight script snippet onto your site or install via Google Tag Manager in 60 seconds.</p>
+        </div>
+
+        <div class="workflow-card">
+          <div class="step-number">02</div>
+          <h3 class="workflow-title">Define Smart Rules</h3>
+          <p class="workflow-desc">Set lead qualification thresholds, routing triggers, and assign rep availability schedules.</p>
+        </div>
+
+        <div class="workflow-card">
+          <div class="step-number">03</div>
+          <h3 class="workflow-title">Close 3x More Leads</h3>
+          <p class="workflow-desc">Watch hot prospects get automatically connected to your team for immediate deal closure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Pricing Section -->
+  <section class="section-padding" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Flexible Plans</span>
+        <h2 class="section-title">Predictable Pricing for <span class="gradient-text">Every Scale</span></h2>
+        <p class="section-subtitle">Start with a 14-day free trial. No credit card required.</p>
+      </div>
+
+      <div class="pricing-toggle-wrapper">
+        <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+        <label class="switch">
+          <input type="checkbox" id="pricingToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label" id="yearlyLabel">Annual</span>
+        <span class="discount-badge">SAVE 20%</span>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card">
+          <h3 class="plan-name">Starter</h3>
+          <p class="plan-desc">Perfect for small teams and early-stage SaaS startups.</p>
+          <div class="plan-price">
+            <span class="amount" data-monthly="$29" data-yearly="$23">$29</span>
+            <span class="period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Up to 2,000 Monthly Visitors</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 2 Sales Representative Seats</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Standard Lead Routing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Slack & Email Alerts</li>
+          </ul>
+          <a href="#" class="btn btn-secondary">Get Started</a>
+        </div>
+
+        <!-- Pro Plan (Popular) -->
+        <div class="pricing-card popular">
+          <div class="popular-tag">Most Popular</div>
+          <h3 class="plan-name">Pro Growth</h3>
+          <p class="plan-desc">Ideal for scaling sales teams requiring deep CRM integration.</p>
+          <div class="plan-price">
+            <span class="amount" data-monthly="$79" data-yearly="$63">$79</span>
+            <span class="period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Up to 25,000 Monthly Visitors</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 10 Sales Representative Seats</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Salesforce & HubSpot Sync</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> AI Response Suggestions</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Start 14-Day Free Trial</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+          <h3 class="plan-name">Enterprise</h3>
+          <p class="plan-desc">For large sales orgs needing custom workflows and SLA guarantees.</p>
+          <div class="plan-price">
+            <span class="amount" data-monthly="$199" data-yearly="$159">$199</span>
+            <span class="period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Unlimited Visitors & Seats</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Custom Smart Routing Rules</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Dedicated Success Manager</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 99.9% Uptime SLA Guarantee</li>
+          </ul>
+          <a href="#" class="btn btn-secondary">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Testimonials Section -->
+  <section class="section-padding" id="testimonials" style="background: #080c13;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Loved By Revenue Leaders</span>
+        <h2 class="section-title">See How SaaSLead Drives <span class="gradient-text">Real Results</span></h2>
+        <p class="section-subtitle">Real feedback from leaders who scaled their inbound pipeline.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="star-rating">★★★★★</div>
+          <p class="testimonial-quote">"SaaSLead cut our lead response time from 4 hours down to under 2 minutes. Our demo-to-close conversion rate soared by 42% in our first month."</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop" alt="Sarah Jenkins" class="user-avatar">
+            <div class="user-info">
+              <span class="user-name">Sarah Jenkins</span>
+              <span class="user-role">VP of Sales at CloudScale</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="star-rating">★★★★★</div>
+          <p class="testimonial-quote">"The automated CRM sync and AI prompt suggestions allow our AE team to handle double the prospect volume without missing a beat."</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&auto=format&fit=crop" alt="David Chen" class="user-avatar">
+            <div class="user-info">
+              <span class="user-name">David Chen</span>
+              <span class="user-role">Chief Revenue Officer, PulseHQ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="star-rating">★★★★★</div>
+          <p class="testimonial-quote">"Setup was shockingly simple. We installed the tag on Monday, and by Wednesday we had already closed a $12,500 enterprise deal."</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=120&auto=format&fit=crop" alt="Elena Rostova" class="user-avatar">
+            <div class="user-info">
+              <span class="user-name">Elena Rostova</span>
+              <span class="user-role">Head of Growth, Synapse Analytics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. FAQ Accordion Section -->
+  <section class="section-padding" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+        <p class="section-subtitle">Everything you need to know about setting up and scaling with SaaSLead.</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question">
+            How fast can we set up SaaSLead?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            You can complete setup in under 5 minutes. Simply copy our single-line JavaScript tag into your website header or Google Tag Manager, link your CRM, and define your routing preferences.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Does it integrate with Salesforce & HubSpot?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Yes! SaaSLead offers native, bidirectional integrations with Salesforce, HubSpot, Marketo, and Zapier to ensure seamless data flow across your entire tech stack.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What happens after the 14-day free trial?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            During your 14-day trial, you have full access to Pro features. After 14 days, you can choose a paid plan or automatically transition to a limited free tier. No charges occur unless you confirm.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Is my data secure and GDPR compliant?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Security is paramount. We are fully SOC-2 Type II certified and compliant with GDPR and CCPA regulations. All data transmitted is encrypted using enterprise 256-bit SSL protocols.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. High-Converting Bottom CTA Banner -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="cta-banner">
+        <h2 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">Ready to Turn Site Visitors into <br><span class="gradient-text">Paying Customers?</span></h2>
+        <p class="section-subtitle" style="max-width: 600px; margin: 1rem auto 0 auto;">Join over 10,000+ sales leaders scaling their conversion today.</p>
+
+        <form class="cta-form" onsubmit="event.preventDefault();">
+          <input type="email" class="cta-input" placeholder="Enter your work email..." required>
+          <button type="submit" class="btn btn-primary">Start Free Trial</button>
+        </form>
+        <span class="cta-microcopy">Instant 14-day access · No credit card required</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Comprehensive Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <div class="logo-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            SaaS<span>Lead</span>
+          </a>
+          <p class="footer-tagline">The automated intent tracking & real-time lead routing platform for high-velocity revenue teams.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Twitter"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>
+            <a href="#" class="social-icon" aria-label="LinkedIn"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="#" class="social-icon" aria-label="GitHub"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-column-title">Product</h4>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#integrations">Integrations</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#enterprise">Enterprise</a></li>
+            <li><a href="#changelog">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column-title">Resources</h4>
+          <ul class="footer-links">
+            <li><a href="#docs">Documentation</a></li>
+            <li><a href="#api">API Reference</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#stories">Customer Stories</a></li>
+            <li><a href="#status">System Status</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#careers">Careers</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#press">Press Kit</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 SaaSLead, Inc. All rights reserved.</span>
+        <div class="footer-legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Preferences</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Demo Video Modal -->
+  <div class="modal-overlay" id="demoModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 style="margin: 0; font-size: 1.1rem; color: #ffffff;">Platform Overview Demo</h3>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="video-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <p style="margin: 0; color: var(--color-text-muted);">Platform Overview Video Preview (2:00)</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Mobile Menu Toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('is-open');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => navMenu.classList.remove('is-open'));
+    });
+
+    // 2. Interactive Pricing Toggle (Monthly / Annual)
+    const pricingToggle = document.getElementById('pricingToggle');
+    const monthlyLabel = document.getElementById('monthlyLabel');
+    const yearlyLabel = document.getElementById('yearlyLabel');
+    const priceAmounts = document.querySelectorAll('.amount');
+
+    pricingToggle.addEventListener('change', () => {
+      const isYearly = pricingToggle.checked;
+
+      if (isYearly) {
+        monthlyLabel.classList.remove('active');
+        yearlyLabel.classList.add('active');
+      } else {
+        yearlyLabel.classList.remove('active');
+        monthlyLabel.classList.add('active');
+      }
+
+      priceAmounts.forEach(price => {
+        price.textContent = isYearly ? price.getAttribute('data-yearly') : price.getAttribute('data-monthly');
+      });
+    });
+
+    // 3. FAQ Accordion Toggle
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+      const questionBtn = item.querySelector('.faq-question');
+      questionBtn.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        faqItems.forEach(i => i.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // 4. Modal Operations
+    const openDemoBtn = document.getElementById('openDemoBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const demoModal = document.getElementById('demoModal');
+
+    openDemoBtn.addEventListener('click', () => demoModal.classList.add('is-active'));
+    closeModalBtn.addEventListener('click', () => demoModal.classList.remove('is-active'));
+    demoModal.addEventListener('click', (e) => {
+      if (e.target === demoModal) demoModal.classList.remove('is-active');
+    });
+  </script>
+</body>
+</html>
