@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SaaSLead is a powerful lead generation tool that helps SaaS businesses convert website visitors into high-value closed leads.">
   <title>SaaSLead — Turn Website Visitors Into High-Value Closed Leads</title>
+  <script>
+  // 1. Disable Right-Click Context Menu
+  document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+  });
+  // 2. Disable DevTools Keyboard Shortcuts
+  document.addEventListener('keydown', function (event) {
+    // Block F12
+    if (event.key === 'F12') {
+      event.preventDefault();
+    }
+    // Block Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (DevTools)
+    if (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) {
+      event.preventDefault();
+    }
+    // Block Ctrl+U (View Source)
+    if (event.ctrlKey && event.key.toUpperCase() === 'U') {
+      event.preventDefault();
+    }
+  });
+  </script>
   <style>
     /* --- 1. Root & Base Reset --- */
     html {
